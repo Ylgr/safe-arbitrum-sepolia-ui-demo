@@ -1,5 +1,8 @@
 import Image from "next/image";
 
+const SIGNER_PRIVATE_KEY_1 = process.env.NEXT_PUBLIC_PRIVATE_KEY_1
+const SIGNER_PRIVATE_KEY_2 = process.env.NEXT_PUBLIC_PRIVATE_KEY_2
+
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
