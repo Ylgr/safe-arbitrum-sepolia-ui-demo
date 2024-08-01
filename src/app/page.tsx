@@ -69,7 +69,7 @@ export default function Home() {
             safeAddress: safeAddress,
             contractNetworks
         })
-        const safeTransaction = await protocolKit.createTransaction({
+        let safeTransaction = await protocolKit.createTransaction({
             transactions: [
                 {
                     to: '0xeaBcd21B75349c59a4177E10ed17FBf2955fE697',
@@ -84,9 +84,25 @@ export default function Home() {
             ]
         });
         console.log('safeTransaction: ', safeTransaction)
-        // const txResponse = await protocolKit.executeTransaction(safeTransaction)
-        // await txResponse.transactionResponse?.wait()
-        // console.log('txResponse: ', txResponse)
+
+        const protocolKit1 = await Safe.init({
+            provider: RPC_URL,
+            signer: SIGNER_PRIVATE_KEY_1 as any,
+            safeAddress: safeAddress,
+            contractNetworks
+        })
+        safeTransaction = await protocolKit1.signTransaction(safeTransaction)
+        const protocolKit2 = await Safe.init({
+            provider: RPC_URL,
+            signer: SIGNER_PRIVATE_KEY_2 as any,
+            safeAddress: safeAddress,
+            contractNetworks
+        })
+        safeTransaction = await protocolKit2.signTransaction(safeTransaction)
+        console.log('safeTransaction: ', safeTransaction)
+        const txResponse = await protocolKit.executeTransaction(safeTransaction)
+        await txResponse.transactionResponse?.wait()
+        console.log('txResponse: ', txResponse)
     }
 
     return (
